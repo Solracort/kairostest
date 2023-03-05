@@ -54,14 +54,11 @@
     <textarea name="solucion" id="solucion" cols="30" rows="10" form="testForm">function calculateIntervalDays(fromDate, toDate = '10/03/2023') {
 }
 
-function removeVocalsAndSpaces(name) {
-}
+function removeVocalsAndSpaces(name) {}
 
-function handleInputName() {
-}
+function handleInputName() {}
 
-function handleInputDate() {
-}
+function handleInputDate() {}
 
 // PUT THE INPUTS LISTENERS HERE
     </textarea>
@@ -93,24 +90,26 @@ function removeVocalsAndSpaces(name) {
 
 function handleInputName() {
   let name = Array.from(document.getElementById('name').value);
+  document.getElementById("nameWithoutVocals").disabled = false;
   document.getElementById("nameWithoutVocals").value = removeVocalsAndSpaces(name);
 }
 // Aquí usamos las 2 funciones para calcular la diferencia de días
 function calculateIntervalDays(fromDate, toDate = '10/03/2023') {
-    values = toDate.split("/");
-    correction = values[1]+'/'+values[0] +'/'+ values[2]
-    finalDate = new Date(correction);
+    let values = toDate.split("/");
+    let correction = values[1]+'/'+values[0] +'/'+ values[2]
+    let finalDate = new Date(correction);
     return Math.round((finalDate - fromDate)/1000/60/60/24);
 }
 
 function handleInputDate() {
     let val= new Date(document.getElementById("date").value);
+    document.getElementById("days").disable = false;
     document.getElementById("days").value = calculateIntervalDays(val);
   }
     
 // PUT THE INPUTS LISTENERS HERE
-  let ini = document.querySelector('input[type="date"]');
+  let ini = document.getElementById('date');
   ini.addEventListener("focusout", handleInputDate);
   let faraon = document.getElementById('name');
   faraon.addEventListener("focusout", handleInputName);
-</script></body></html>
+</script></body></html> 
