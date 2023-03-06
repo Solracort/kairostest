@@ -51,8 +51,7 @@
       <input type="text" id="days" name="days" value="" disabled="">
     </form>
     <h4>Tu código</h4>
-    <textarea name="solucion" id="solucion" cols="30" rows="10" form="testForm">function calculateIntervalDays(fromDate, toDate = '10/03/2023') {
-}
+    <!-- <textarea name="solucion" id="solucion" cols="30" rows="10" form="testForm">function calculateIntervalDays(fromDate, toDate = '10/03/2023') {}
 
 function removeVocalsAndSpaces(name) {}
 
@@ -62,7 +61,7 @@ function handleInputDate() {}
 
 // PUT THE INPUTS LISTENERS HERE
     </textarea>
-    <button id="btnComprobar" form="testForm">Comprobar</button>
+    <button id="btnComprobar" form="testForm">Comprobar</button> -->
 
   </div>
 </main>
@@ -71,45 +70,29 @@ function handleInputDate() {}
 <div> <div id="modalOverlay" class="hidden"></div> <div id="modal" class="hidden"> <div id="modal-content"> <button id="close-btn">X</button> <h2 id="modalTitle">Error</h2> <p id="modalContent">La solución no es correcta</p> </div> </div></div>
 <script id="user_solution">function calculateIntervalDays(fromDate, toDate = '10/03/2023') {
 }
-// Aquí usamos las 2 funciones para quitar vocales del nombre
 function removeVocalsAndSpaces(name) {
-  let newname ="";
- 
-  for (let i in name) {
-      if (name[i] != 'a' && name[i] !='A' && name[i] !='á' && name[i] !='Á' && 
-          name[i] != 'e' && name[i] !='E' && name[i] !='é' && name[i] !='É' &&
-          name[i] != 'i' && name[i] !='I' && name[i] !='í' && name[i] !='Í' &&
-          name[i] != 'o' && name[i] !='O' && name[i] !='ó' && name[i] !='Ó' &&
-          name[i] != 'u' && name[i] !='U' && name[i] !='ú' && name[i] !='Ú' && 
-          name[i] !=' '){
-        newname = newname + name[i];
-      }
-  }
+  let newname =name.replace(/[aáAÁeéEÉiíIÍoOóÓuúÚ' ']/g, '');
   return newname;
 }
-
-function handleInputName() {
-  let name = Array.from(document.getElementById('name').value);
-  document.getElementById("nameWithoutVocals").disabled = false;
-  document.getElementById("nameWithoutVocals").value = removeVocalsAndSpaces(name);
+async function handleInputName() {
+  let name = document.getElementById('name').value;
+  
+  document.getElementById("nameWithoutVocals").value = await removeVocalsAndSpaces(name);
 }
-// Aquí usamos las 2 funciones para calcular la diferencia de días
 function calculateIntervalDays(fromDate, toDate = '10/03/2023') {
     let values = toDate.split("/");
-    let correction = values[1]+'/'+values[0] +'/'+ values[2]
+    let correction = values[1]+'/'+values[0] +'/'+ values[2];
     let finalDate = new Date(correction);
-    return Math.round((finalDate - fromDate)/1000/60/60/24);
+    return Math.ceil ((finalDate - fromDate)/1000/60/60/24);
 }
-
-function handleInputDate() {
+async function handleInputDate() {
     let val= new Date(document.getElementById("date").value);
-    document.getElementById("days").disable = false;
-    document.getElementById("days").value = calculateIntervalDays(val);
-  }
     
+    document.getElementById("days").value = await calculateIntervalDays(val);
+  }
 // PUT THE INPUTS LISTENERS HERE
   let ini = document.getElementById('date');
-  ini.addEventListener("focusout", handleInputDate);
+  ini.addEventListener("blur", handleInputDate);
   let faraon = document.getElementById('name');
-  faraon.addEventListener("focusout", handleInputName);
+  faraon.addEventListener("blur", handleInputName);
 </script></body></html> 
