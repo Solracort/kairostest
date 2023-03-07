@@ -68,27 +68,33 @@ function handleInputDate() {}
 <footer> <span class="secondary">GeneracionK VII</span> <span class="primary">© KairósDS</span> <span class="secondary">2023</span> <firebase-crud id="firebaseCrud" reference-id="loginButton"></firebase-crud></footer>
 <div id="overlay" class="hidden"> <div class="loader"></div></div>
 <div> <div id="modalOverlay" class="hidden"></div> <div id="modal" class="hidden"> <div id="modal-content"> <button id="close-btn">X</button> <h2 id="modalTitle">Error</h2> <p id="modalContent">La solución no es correcta</p> </div> </div></div>
-<script id="user_solution">function calculateIntervalDays(fromDate, toDate = '10/03/2023') {
-}
+<script id="user_solution">
+
 function removeVocalsAndSpaces(name) {
   let newname =name.replace(/[aáAÁeéEÉiíIÍoOóÓuúÚ' ']/g, '');
   return newname;
 }
-async function handleInputName() {
+function handleInputName() {
   let name = document.getElementById('name').value;
-  
-  document.getElementById("nameWithoutVocals").value = await removeVocalsAndSpaces(name);
+  const myPromise2 = new Promise((resolve, reject) => {
+      setTimeout(() => resolve(removeVocalsAndSpaces(name)),);
+    });
+  myPromise2.then(res => document.getElementById("nameWithoutVocals").value = res)  
 }
 function calculateIntervalDays(fromDate, toDate = '10/03/2023') {
     let values = toDate.split("/");
     let correction = values[1]+'/'+values[0] +'/'+ values[2];
     let finalDate = new Date(correction);
-    return Math.ceil ((finalDate - fromDate)/1000/60/60/24);
+    let diff = Math.ceil ((finalDate.getTime() - fromDate.getTime())/1000/60/60/24);
+    return diff.toString();
 }
-async function handleInputDate() {
+function handleInputDate() {
     let val= new Date(document.getElementById("date").value);
+    const myPromise = new Promise((resolve, reject) => {
+      setTimeout(() => resolve(calculateIntervalDays(val)),);
+    });
+    myPromise.then(res => document.getElementById("days").value = res)
     
-    document.getElementById("days").value = await calculateIntervalDays(val);
   }
 // PUT THE INPUTS LISTENERS HERE
   let ini = document.getElementById('date');
