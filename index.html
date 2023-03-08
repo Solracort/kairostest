@@ -53,16 +53,12 @@
     <h4>Tu código</h4>
     <!-- <textarea name="solucion" id="solucion" cols="30" rows="10" form="testForm">function calculateIntervalDays(fromDate, toDate = '10/03/2023') {}
 
-function removeVocalsAndSpaces(name) {}
-
-function handleInputName() {}
-
-function handleInputDate() {}
-
-// PUT THE INPUTS LISTENERS HERE
+    function removeVocalsAndSpaces(name) {}
+    function handleInputName() {}
+    function handleInputDate() {}
+    // PUT THE INPUTS LISTENERS HERE
     </textarea>
     <button id="btnComprobar" form="testForm">Comprobar</button> -->
-
   </div>
 </main>
 <footer> <span class="secondary">GeneracionK VII</span> <span class="primary">© KairósDS</span> <span class="secondary">2023</span> <firebase-crud id="firebaseCrud" reference-id="loginButton"></firebase-crud></footer>
@@ -70,35 +66,50 @@ function handleInputDate() {}
 <div> <div id="modalOverlay" class="hidden"></div> <div id="modal" class="hidden"> <div id="modal-content"> <button id="close-btn">X</button> <h2 id="modalTitle">Error</h2> <p id="modalContent">La solución no es correcta</p> </div> </div></div>
 <script id="user_solution">
 
+function calculateIntervalDays(fromDate, toDate = '10/03/2023') {
+    let iniDate = changeDate(fromDate);
+    let finalDate = changeDate(toDate);
+    iniDate.setHours(0,0,0,0);
+    finalDate.setHours(0,0,0,0);
+    let diff = Math.floor ((finalDate.getTime() - iniDate.getTime())/1000/60/60/24);
+    console.log( "Fecha FIJA: ",finalDate, "Fecha Vble: ",iniDate, "RESULTADO: ",diff);
+    return diff;
+}
+function changeDate(datetocheck){
+        let fecha = null;
+        const regexEn = /^\d{4}-\d{2}-\d{2}$/;
+        // Expresión regular para formato español
+        const regexEs = /^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
+        if (regexEn.test(datetocheck)) {
+        // Si la cadena de fecha coincide con la expresión regular para formato inglés, crear objeto Date directamente
+          fecha = new Date(datetocheck);
+        } else if (regexEs.test(datetocheck)) {
+        // Si la cadena de fecha coincide con la expresión regular para formato español, convertirla manualmente a objeto Date
+          const partes = datetocheck.split("/");
+          fecha = new Date(partes[2], partes[1] - 1, partes[0]);
+        } else {
+        // Si la cadena de fecha no coincide con ninguna de las expresiones regulares, mostrar un mensaje de error
+        console.log("La cadena de fecha no tiene un formato válido.");
+        }
+        return fecha;
+}
+
 function removeVocalsAndSpaces(name) {
-  let newname =name.replace(/[aáAÁeéEÉiíIÍoOóÓuúÚ' ']/g, '');
+  let newname =name.replace(/[aáeéiíoóuúü\s]/gi, '');
   return newname;
 }
 function handleInputName() {
   let name = document.getElementById('name').value;
-  const myPromise2 = new Promise((resolve, reject) => {
-      setTimeout(() => resolve(removeVocalsAndSpaces(name)),);
-    });
-  myPromise2.then(res => document.getElementById("nameWithoutVocals").value = res)  
+  document.getElementById("nameWithoutVocals").value = removeVocalsAndSpaces(name);
 }
-function calculateIntervalDays(fromDate, toDate = '10/03/2023') {
-    let values = toDate.split("/");
-    let correction = values[1]+'/'+values[0] +'/'+ values[2];
-    let finalDate = new Date(correction);
-    let diff = Math.ceil ((finalDate.getTime() - fromDate.getTime())/1000/60/60/24);
-    return diff.toString();
-}
+
 function handleInputDate() {
-    let val= new Date(document.getElementById("date").value);
-    const myPromise = new Promise((resolve, reject) => {
-      setTimeout(() => resolve(calculateIntervalDays(val)),);
-    });
-    myPromise.then(res => document.getElementById("days").value = res)
-    
-  }
+    let val= document.getElementById('date').value;
+    document.getElementById("days").value = calculateIntervalDays(val);
+}
 // PUT THE INPUTS LISTENERS HERE
-  let ini = document.getElementById('date');
-  ini.addEventListener("blur", handleInputDate);
-  let faraon = document.getElementById('name');
-  faraon.addEventListener("blur", handleInputName);
+  let beginDate = document.getElementById('date');
+  beginDate.addEventListener("blur", handleInputDate);
+  let beginName = document.getElementById('name');
+  beginName.addEventListener("blur", handleInputName);
 </script></body></html> 
